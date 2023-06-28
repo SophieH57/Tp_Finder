@@ -32,7 +32,7 @@ List<Bachelor> generateFifteenPersonsWithGender(Gender gender) {
         gender == Gender.male ? menAvatars[i] : womenAvatars[i],
         getSearchFor(),
         faker.job,
-        faker.lorem as String?);
+        (faker.lorem).toString());
     gender == Gender.male ? men.add(newBachelor) : women.add(newBachelor);
   }
   return gender == Gender.male ? men : women;
@@ -40,3 +40,4 @@ List<Bachelor> generateFifteenPersonsWithGender(Gender gender) {
 
 List<Bachelor> men = generateFifteenPersonsWithGender(Gender.male);
 List<Bachelor> women = generateFifteenPersonsWithGender(Gender.female);
+List<Bachelor> allCustomers = [...men, ...women];

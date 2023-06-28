@@ -1,6 +1,6 @@
 List<String> menAvatars = [
   'images/man-1.png',
-  'images/man-2png',
+  'images/man-2.png',
   'images/man-3.png',
   'images/man-4.png',
   'images/man-5.png',
@@ -17,7 +17,7 @@ List<String> menAvatars = [
 ];
 List<String> womenAvatars = [
   'images/woman-1.png',
-  'images/woman-2png',
+  'images/woman-2.png',
   'images/woman-3.png',
   'images/woman-4.png',
   'images/woman-5.png',

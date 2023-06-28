@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'bachelors_generate.dart';
+
 class FinderHomePage extends StatefulWidget {
   const FinderHomePage({super.key});
 
@@ -15,7 +17,19 @@ class _FinderPageState extends State<FinderHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Finder'),
       ),
-      body: Container(),
+      body: ListView.builder(
+          itemCount: allCustomers.length,
+          itemBuilder: ((context, index) {
+            return Card(
+              child: Row(
+                children: [
+                  Image.asset(allCustomers[index].avatar),
+                  Text(
+                      '${allCustomers[index].firstname} ${allCustomers[index].lastname}')
+                ],
+              ),
+            );
+          })),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {},
         tooltip: 'Increment',
