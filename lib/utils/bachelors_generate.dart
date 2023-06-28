@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:finder/utils/avatars.dart';
 import 'package:finder/utils/firstnames.dart';
 
-import 'models/bachelor.dart';
+import '../models/bachelor.dart';
 import 'package:faker/faker.dart';
 
 String getFirstname(Gender gender) {
@@ -31,8 +31,8 @@ List<Bachelor> generateFifteenPersonsWithGender(Gender gender) {
         gender,
         gender == Gender.male ? menAvatars[i] : womenAvatars[i],
         getSearchFor(),
-        faker.job,
-        (faker.lorem).toString());
+        faker.job.title(),
+        faker.lorem.sentence());
     gender == Gender.male ? men.add(newBachelor) : women.add(newBachelor);
   }
   return gender == Gender.male ? men : women;

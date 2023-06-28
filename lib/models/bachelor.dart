@@ -1,5 +1,3 @@
-import 'package:faker/faker.dart';
-
 enum Gender { male, female }
 
 class Bachelor {
@@ -8,7 +6,7 @@ class Bachelor {
   Gender gender;
   String avatar;
   List<Gender>? searchFor;
-  Job? job;
+  String? job;
   String? description;
 
   Bachelor(this.firstname, this.lastname, this.gender, this.avatar,

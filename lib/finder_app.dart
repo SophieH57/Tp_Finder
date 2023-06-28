@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:finder/finder_home_page.dart';
+import 'package:finder/bachelors_master.dart';
 
 class FinderApp extends StatelessWidget {
   const FinderApp({super.key});
@@ -12,7 +12,7 @@ class FinderApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const FinderHomePage(),
+      home: BachelorsMaster(),
     );
   }
 }

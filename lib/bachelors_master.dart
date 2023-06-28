@@ -1,15 +1,20 @@
+import 'package:finder/custom_widgets/bachelor_preview.dart';
 import 'package:flutter/material.dart';
 
-import 'bachelors_generate.dart';
+import 'models/bachelor.dart';
+import 'utils/bachelors_generate.dart';
 
-class FinderHomePage extends StatefulWidget {
-  const FinderHomePage({super.key});
+class BachelorsMaster extends StatefulWidget {
+  final List<Bachelor> likedBachelorsList = [];
+  BachelorsMaster({super.key});
 
   @override
-  State<FinderHomePage> createState() => _FinderPageState();
+  State<BachelorsMaster> createState() => _BachelorsMasterState();
 }
 
-class _FinderPageState extends State<FinderHomePage> {
+class _BachelorsMasterState extends State<BachelorsMaster> {
+  void setLikedBachelorsList() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,15 +25,7 @@ class _FinderPageState extends State<FinderHomePage> {
       body: ListView.builder(
           itemCount: allCustomers.length,
           itemBuilder: ((context, index) {
-            return Card(
-              child: Row(
-                children: [
-                  Image.asset(allCustomers[index].avatar),
-                  Text(
-                      '${allCustomers[index].firstname} ${allCustomers[index].lastname}')
-                ],
-              ),
-            );
+            return BachelorPreview(bachelor: allCustomers[index]);
           })),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {},
