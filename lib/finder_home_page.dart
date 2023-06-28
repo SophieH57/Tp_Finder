@@ -1,7 +1,4 @@
-import 'package:finder/models/bachelor.dart';
 import 'package:flutter/material.dart';
-
-import 'bachelors_generate.dart';
 
 class FinderHomePage extends StatefulWidget {
   const FinderHomePage({super.key});
@@ -11,9 +8,6 @@ class FinderHomePage extends StatefulWidget {
 }
 
 class _FinderPageState extends State<FinderHomePage> {
-  List<Bachelor> men = generateFifteenPersonsWithGender(Gender.male);
-  List<Bachelor> women = generateFifteenPersonsWithGender(Gender.female);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
