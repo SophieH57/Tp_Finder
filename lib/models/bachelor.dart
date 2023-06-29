@@ -1,6 +1,7 @@
 enum Gender { male, female }
 
 class Bachelor {
+  int id;
   String firstname;
   String lastname;
   Gender gender;
@@ -9,6 +10,6 @@ class Bachelor {
   String? job;
   String? description;
 
-  Bachelor(this.firstname, this.lastname, this.gender, this.avatar,
+  Bachelor(this.id, this.firstname, this.lastname, this.gender, this.avatar,
       [this.searchFor, this.job, this.description]);
 }

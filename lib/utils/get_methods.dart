@@ -1,3 +1,4 @@
+import 'package:finder/utils/bachelors_generate.dart';
 import 'package:flutter/material.dart';
 
 import '../models/bachelor.dart';
@@ -10,4 +11,8 @@ Color getBackgroundColorAccordingToGender(Gender gender) {
 
 Color getTextColorAccordingToGender(Gender gender) {
   return gender == Gender.male ? Colors.lightGreen : Colors.red;
+}
+
+Bachelor getBachelorById(int id) {
+  return allCustomers.where((element) => element.id == id).toList()[0];
 }

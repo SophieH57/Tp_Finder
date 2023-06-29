@@ -6,29 +6,21 @@ import 'package:provider/provider.dart';
 import '../models/bachelor.dart';
 
 class BachelorDetails extends StatefulWidget {
-  final Bachelor bachelor;
-  const BachelorDetails({required this.bachelor, super.key});
+  final int bachelorId;
+  const BachelorDetails({required this.bachelorId, super.key});
 
   @override
   State<BachelorDetails> createState() => _BachelorDetailsState();
 }
 
 class _BachelorDetailsState extends State<BachelorDetails> {
-  late Bachelor bachelor;
+  late int bachelorId;
 
   bool _liked = false;
 
-  void _isLiked() {
-    setState(() {
-      _liked = !_liked;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(snackBar(bachelor));
-    context.read<LikedList>().addLikeBachelor(bachelor);
-  }
-
   @override
   void initState() {
-    bachelor = widget.bachelor;
+    bachelorId = widget.bachelorId;
     super.initState();
   }
 
@@ -45,6 +37,17 @@ class _BachelorDetailsState extends State<BachelorDetails> {
 
   @override
   Widget build(BuildContext context) {
+    Bachelor bachelor = getBachelorById(bachelorId);
+
+    void isLiked() {
+      setState(() {
+        _liked = !_liked;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(snackBar(bachelor));
+      Provider.of<BachelorsFavoritesProvider>(context, listen: false)
+          .addFavoritesBachelor(bachelor);
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: getBackgroundColorAccordingToGender(bachelor.gender),
@@ -88,10 +91,9 @@ class _BachelorDetailsState extends State<BachelorDetails> {
                       color: getTextColorAccordingToGender(bachelor.gender)),
                   Text(bachelor.job!),
                 ]),
-                // Text(bachelor.job!.title()),
                 Text(bachelor.description!),
                 GestureDetector(
-                  onTap: () => _isLiked(),
+                  onTap: () => isLiked(),
                   child: Icon(
                     _liked ? Icons.thumb_down : Icons.thumb_up,
                     color: _liked ? Colors.grey : Colors.red,

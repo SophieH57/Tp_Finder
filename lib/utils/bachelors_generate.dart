@@ -22,10 +22,10 @@ List<Gender> getSearchFor() {
 }
 
 List<Bachelor> generateFifteenPersonsWithGender(Gender gender) {
-  List<Bachelor> men = [];
-  List<Bachelor> women = [];
+  List<Bachelor> persons = [];
   for (var i = 0; i < 15; i++) {
     Bachelor newBachelor = Bachelor(
+        gender == Gender.male ? i + 1 : i + 15,
         getFirstname(gender),
         faker.person.lastName(),
         gender,
@@ -33,9 +33,9 @@ List<Bachelor> generateFifteenPersonsWithGender(Gender gender) {
         getSearchFor(),
         faker.job.title(),
         faker.lorem.sentence());
-    gender == Gender.male ? men.add(newBachelor) : women.add(newBachelor);
+    persons.add(newBachelor);
   }
-  return gender == Gender.male ? men : women;
+  return persons;
 }
 
 List<Bachelor> men = generateFifteenPersonsWithGender(Gender.male);
