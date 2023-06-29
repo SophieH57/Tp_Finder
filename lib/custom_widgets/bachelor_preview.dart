@@ -1,7 +1,7 @@
-import 'package:finder/custom_widgets/bachelor_details.dart';
 import 'package:finder/main.dart';
 import 'package:finder/models/bachelor.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/get_methods.dart';
@@ -34,12 +34,7 @@ class _BachelorPreviewState extends State<BachelorPreview> {
     final currentRouteName = ModalRoute.of(context)?.settings.name;
 
     return GestureDetector(
-      onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => BachelorDetails(
-                    bachelorId: bachelor.id,
-                  ))),
+      onTap: () => context.go('/bachelor/${bachelor.id}'),
       child: Card(
         elevation: 10.0,
         color: getBackgroundColorAccordingToGender(bachelor.gender),
@@ -71,8 +66,7 @@ class _BachelorPreviewState extends State<BachelorPreview> {
             IconButton(
                 icon: const Icon(Icons.dangerous, color: Colors.black),
                 onPressed: () => {
-                      Provider.of<BachelorsDislikeProvider>(context,
-                              listen: false)
+                      Provider.of<BachelorsProvider>(context, listen: false)
                           .addDislike(bachelor.id)
                     })
           ]),
