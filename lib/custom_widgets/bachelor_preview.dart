@@ -1,11 +1,14 @@
 import 'package:finder/custom_widgets/bachelor_details.dart';
+import 'package:finder/main.dart';
 import 'package:finder/models/bachelor.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/get_methods.dart';
 
 class BachelorPreview extends StatefulWidget {
   final Bachelor bachelor;
+
   const BachelorPreview({required this.bachelor, super.key});
 
   @override
@@ -23,11 +26,15 @@ class _BachelorPreviewState extends State<BachelorPreview> {
 
   @override
   Widget build(BuildContext context) {
+    List<Bachelor> liked = context.read<LikedList>().getLikedList;
+
     return GestureDetector(
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => BachelorDetails(bachelor: bachelor))),
+              builder: (context) => BachelorDetails(
+                    bachelor: bachelor,
+                  ))),
       child: Card(
         elevation: 10.0,
         color: getBackgroundColorAccordingToGender(bachelor.gender),
@@ -37,6 +44,8 @@ class _BachelorPreviewState extends State<BachelorPreview> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              Icon(Icons.favorite,
+                  color: (liked.contains(bachelor) ? Colors.red : Colors.grey)),
               Image.asset(
                 bachelor.avatar,
                 height: 100,

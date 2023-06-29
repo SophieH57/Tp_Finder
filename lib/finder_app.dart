@@ -12,7 +12,7 @@ class FinderApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: BachelorsMaster(),
+      home: const BachelorsMaster(),
     );
   }
 }

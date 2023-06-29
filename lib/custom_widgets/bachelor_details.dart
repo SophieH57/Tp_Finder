@@ -1,5 +1,7 @@
+import 'package:finder/main.dart';
 import 'package:finder/utils/get_methods.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/bachelor.dart';
 
@@ -21,6 +23,7 @@ class _BachelorDetailsState extends State<BachelorDetails> {
       _liked = !_liked;
     });
     ScaffoldMessenger.of(context).showSnackBar(snackBar(bachelor));
+    context.read<LikedList>().addLikeBachelor(bachelor);
   }
 
   @override

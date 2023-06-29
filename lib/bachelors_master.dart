@@ -5,15 +5,20 @@ import 'models/bachelor.dart';
 import 'utils/bachelors_generate.dart';
 
 class BachelorsMaster extends StatefulWidget {
-  final List<Bachelor> likedBachelorsList = [];
-  BachelorsMaster({super.key});
+  const BachelorsMaster({super.key});
 
   @override
   State<BachelorsMaster> createState() => _BachelorsMasterState();
 }
 
 class _BachelorsMasterState extends State<BachelorsMaster> {
-  void setLikedBachelorsList() {}
+  List<Bachelor> likedBachelorsList = [];
+
+  void addLikedBachelor(Bachelor newBachelor) {
+    setState(() {
+      likedBachelorsList.add(newBachelor);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +32,6 @@ class _BachelorsMasterState extends State<BachelorsMaster> {
           itemBuilder: ((context, index) {
             return BachelorPreview(bachelor: allCustomers[index]);
           })),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }
