@@ -1,12 +1,13 @@
-import 'package:finder/main.dart';
 import 'package:finder/utils/get_methods.dart';
+import 'package:finder/utils/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../models/bachelor.dart';
 
 class BachelorDetails extends StatefulWidget {
-  final int bachelorId;
+  final String bachelorId;
   const BachelorDetails({required this.bachelorId, super.key});
 
   @override
@@ -14,9 +15,8 @@ class BachelorDetails extends StatefulWidget {
 }
 
 class _BachelorDetailsState extends State<BachelorDetails> {
-  late int bachelorId;
-
-  bool _liked = false;
+  late String bachelorId;
+  late bool liked;
 
   @override
   void initState() {
@@ -26,26 +26,26 @@ class _BachelorDetailsState extends State<BachelorDetails> {
 
   SnackBar snackBar(Bachelor bachelor) => SnackBar(
         content: Text(
-          _liked
+          liked
               ? 'Vous avez liké ${bachelor.firstname}'
               : 'Vous ne likez plus ${bachelor.firstname}',
           style: const TextStyle(color: Colors.white),
         ),
         duration: const Duration(seconds: 2),
-        backgroundColor: _liked ? Colors.red : Colors.grey,
+        backgroundColor: liked ? Colors.red : Colors.grey,
       );
 
   @override
   Widget build(BuildContext context) {
     Bachelor bachelor = getBachelorById(bachelorId);
+    List<Bachelor> likedBachelorsList =
+        context.watch<BachelorsFavoritesProvider>().getBachelorsFavorites;
+    liked = likedBachelorsList.contains(bachelor);
 
     void isLiked() {
-      setState(() {
-        _liked = !_liked;
-      });
       ScaffoldMessenger.of(context).showSnackBar(snackBar(bachelor));
       Provider.of<BachelorsFavoritesProvider>(context, listen: false)
-          .addFavoritesBachelor(bachelor);
+          .toggleFavoritesBachelor(bachelor);
     }
 
     return Scaffold(
@@ -61,49 +61,67 @@ class _BachelorDetailsState extends State<BachelorDetails> {
         child: Padding(
           padding: const EdgeInsets.all(25.0),
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Image.asset(bachelor.avatar,
-                        height: 200, width: 200, alignment: Alignment.center),
-                    Icon(
-                      Icons.favorite,
-                      color: _liked
-                          ? Colors.red.withOpacity(0.75)
-                          : Colors.grey.withOpacity(0.5),
-                      size: 80,
-                    )
-                  ],
-                ),
-                Text('${bachelor.firstname} ${bachelor.lastname}',
-                    style: TextStyle(
-                        color: getTextColorAccordingToGender(bachelor.gender),
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        decorationColor:
-                            getTextColorAccordingToGender(bachelor.gender))),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Image.asset(bachelor.avatar,
+                      height: 200, width: 200, alignment: Alignment.center),
+                  Icon(
+                    Icons.favorite,
+                    color: liked
+                        ? Colors.red.withOpacity(0.75)
+                        : Colors.grey.withOpacity(0.5),
+                    size: 80,
+                  ),
+                ],
+              ),
+              Text('${bachelor.firstname} ${bachelor.lastname}',
+                  style: TextStyle(
+                      color: getTextColorAccordingToGender(bachelor.gender),
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                      decorationColor:
+                          getTextColorAccordingToGender(bachelor.gender))),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Icon(Icons.work,
                       weight: 30,
                       size: 30,
                       color: getTextColorAccordingToGender(bachelor.gender)),
                   Text(bachelor.job!),
-                ]),
-                Text(bachelor.description!),
-                GestureDetector(
-                  onTap: () => isLiked(),
-                  child: Icon(
-                    _liked ? Icons.thumb_down : Icons.thumb_up,
-                    color: _liked ? Colors.grey : Colors.red,
-                  ),
-                )
-              ]),
+                ],
+              ),
+              Text(bachelor.description!),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     const Text('A la recherche de :'),
+              //     ListView.builder(
+              //       itemCount: bachelor.searchFor!.length,
+              //       itemBuilder: ((context, index) {
+              //         final Gender gender = bachelor.searchFor![index];
+              //         return Icon(
+              //             gender == Gender.male ? Icons.male : Icons.female);
+              //       }),
+              //     ),
+              //   ],
+              // ),
+              GestureDetector(
+                onTap: () => isLiked(),
+                child: Icon(
+                  liked ? Icons.thumb_down : Icons.thumb_up,
+                  color: Colors.grey,
+                ),
+              )
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: () => context.go('/'),
         tooltip: 'Return',
         child: const Icon(Icons.reply_outlined),
       ),

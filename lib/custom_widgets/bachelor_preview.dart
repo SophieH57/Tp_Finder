@@ -1,33 +1,18 @@
-import 'package:finder/main.dart';
 import 'package:finder/models/bachelor.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/get_methods.dart';
+import '../utils/providers.dart';
 
-class BachelorPreview extends StatefulWidget {
-  final int bachelorId;
+class BachelorPreview extends StatelessWidget {
+  final Bachelor bachelor;
 
-  const BachelorPreview({required this.bachelorId, super.key});
-
-  @override
-  State<BachelorPreview> createState() => _BachelorPreviewState();
-}
-
-class _BachelorPreviewState extends State<BachelorPreview> {
-  late int bachelorId;
-
-  @override
-  void initState() {
-    bachelorId = widget.bachelorId;
-    super.initState();
-  }
+  const BachelorPreview({required this.bachelor, super.key});
 
   @override
   Widget build(BuildContext context) {
-    Bachelor bachelor = getBachelorById(bachelorId);
-
     List<Bachelor> liked =
         context.watch<BachelorsFavoritesProvider>().getBachelorsFavorites;
 
@@ -41,35 +26,51 @@ class _BachelorPreviewState extends State<BachelorPreview> {
         margin: const EdgeInsets.all(8.0),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            Icon(Icons.favorite,
-                color: (liked.contains(bachelor) ? Colors.red : Colors.grey)),
-            Image.asset(
-              bachelor.avatar,
-              height: 100,
-              width: 100,
-            ),
-            Text(
-              '${bachelor.firstname} ${bachelor.lastname}',
-              style: TextStyle(
-                  color: getTextColorAccordingToGender(bachelor.gender)),
-            ),
-            IconButton(
-                icon:
-                    Icon(currentRouteName == 'favorites' ? Icons.delete : null),
-                onPressed: () => {
-                      Provider.of<BachelorsFavoritesProvider>(context,
-                              listen: false)
-                          .deleteFavoriteBachelor(bachelor)
-                    }),
-            IconButton(
-                icon: const Icon(Icons.dangerous, color: Colors.black),
-                onPressed: () => {
-                      Provider.of<BachelorsProvider>(context, listen: false)
-                          .addDislike(bachelor.id)
-                    })
-          ]),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                onPressed: () => Provider.of<BachelorsFavoritesProvider>(
+                        context,
+                        listen: false)
+                    .toggleFavoritesBachelor(bachelor),
+                icon: Icon(
+                  Icons.favorite,
+                  color: (liked.contains(bachelor) ? Colors.red : Colors.grey),
+                ),
+              ),
+              Image.asset(
+                bachelor.avatar,
+                height: 100,
+                width: 100,
+              ),
+              Text(
+                '${bachelor.firstname} ${bachelor.lastname}',
+                style: TextStyle(
+                    color: getTextColorAccordingToGender(bachelor.gender)),
+              ),
+              currentRouteName == 'favorites'
+                  ? IconButton(
+                      icon: const Icon(Icons.thumb_down),
+                      onPressed: () {
+                        Provider.of<BachelorsFavoritesProvider>(context,
+                                listen: false)
+                            .deleteFavoriteBachelor(bachelor);
+                      },
+                    )
+                  : Container(),
+              currentRouteName == 'favorites'
+                  ? Container()
+                  : IconButton(
+                      icon: const Icon(Icons.dangerous, color: Colors.black),
+                      onPressed: () => {
+                        Provider.of<BachelorsProvider>(context, listen: false)
+                            .addDislike(bachelor)
+                      },
+                      tooltip: 'Blacklist',
+                    ),
+            ],
+          ),
         ),
       ),
     );

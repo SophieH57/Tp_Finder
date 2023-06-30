@@ -1,6 +1,6 @@
 import 'package:finder/custom_widgets/bachelor_preview.dart';
-import 'package:finder/main.dart';
 import 'package:finder/models/bachelor.dart';
+import 'package:finder/utils/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,8 +12,6 @@ class BachelorsFavorites extends StatefulWidget {
 }
 
 class _BachelorsFavoritesState extends State<BachelorsFavorites> {
-  List<Bachelor> favoritesBachelor = [];
-
   @override
   Widget build(BuildContext context) {
     List<Bachelor> liked =
@@ -25,10 +23,15 @@ class _BachelorsFavoritesState extends State<BachelorsFavorites> {
         centerTitle: true,
       ),
       body: ListView.builder(
-          itemCount: liked.length,
-          itemBuilder: ((context, index) {
-            return BachelorPreview(bachelorId: liked[index].id);
-          })),
+        itemCount: liked.length,
+        itemBuilder: ((context, index) {
+          final Bachelor bachelor = liked[index];
+
+          return BachelorPreview(
+            bachelor: bachelor,
+          );
+        }),
+      ),
     );
   }
 }

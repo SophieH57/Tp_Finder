@@ -13,6 +13,6 @@ Color getTextColorAccordingToGender(Gender gender) {
   return gender == Gender.male ? Colors.lightGreen : Colors.red;
 }
 
-Bachelor getBachelorById(int id) {
-  return allCustomers.where((element) => element.id == id).toList()[0];
+Bachelor getBachelorById(String id) {
+  return allCustomers().where((element) => element.id == id).toList()[0];
 }
