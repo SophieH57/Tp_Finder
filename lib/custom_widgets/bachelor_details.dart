@@ -27,12 +27,12 @@ class _BachelorDetailsState extends State<BachelorDetails> {
   SnackBar snackBar(Bachelor bachelor) => SnackBar(
         content: Text(
           liked
-              ? 'Vous avez liké ${bachelor.firstname}'
-              : 'Vous ne likez plus ${bachelor.firstname}',
+              ? 'Vous ne likez plus ${bachelor.firstname}'
+              : 'Vous avez liké ${bachelor.firstname}',
           style: const TextStyle(color: Colors.white),
         ),
         duration: const Duration(seconds: 2),
-        backgroundColor: liked ? Colors.red : Colors.grey,
+        backgroundColor: liked ? Colors.grey : Colors.red,
       );
 
   @override
@@ -95,20 +95,6 @@ class _BachelorDetailsState extends State<BachelorDetails> {
                 ],
               ),
               Text(bachelor.description!),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     const Text('A la recherche de :'),
-              //     ListView.builder(
-              //       itemCount: bachelor.searchFor!.length,
-              //       itemBuilder: ((context, index) {
-              //         final Gender gender = bachelor.searchFor![index];
-              //         return Icon(
-              //             gender == Gender.male ? Icons.male : Icons.female);
-              //       }),
-              //     ),
-              //   ],
-              // ),
               GestureDetector(
                 onTap: () => isLiked(),
                 child: Icon(

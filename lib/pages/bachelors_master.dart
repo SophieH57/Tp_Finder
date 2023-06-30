@@ -14,57 +14,81 @@ class BachelorsMaster extends StatelessWidget {
     bool maleSelected = context.watch<BachelorsProvider>().getMaleSelect;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Finder'),
-        actions: <Widget>[
-          const Text('Reset'),
-          IconButton(
-              onPressed: Provider.of<BachelorsProvider>(context, listen: false)
-                  .cleanList,
-              icon: const Icon(Icons.refresh)),
-          const Text('Select your preferences'),
-          IconButton(
-            onPressed: () => {
-              Provider.of<BachelorsProvider>(context, listen: false)
-                  .toggleGender(Gender.female)
-            },
-            icon: Icon(
-              Icons.female,
-              color: femaleSelected ? Colors.black : Colors.grey,
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: const Text('Finder'),
+          actions: <Widget>[
+            const Text('Reset'),
+            IconButton(
+                onPressed:
+                    Provider.of<BachelorsProvider>(context, listen: false)
+                        .cleanList,
+                icon: const Icon(Icons.refresh)),
+            const Text('Select your preferences'),
+            IconButton(
+              onPressed: () => {
+                Provider.of<BachelorsProvider>(context, listen: false)
+                    .toggleGender(Gender.female)
+              },
+              icon: Icon(
+                Icons.female,
+                color: femaleSelected ? Colors.black : Colors.grey,
+              ),
             ),
-          ),
-          IconButton(
-            onPressed: () => {
-              Provider.of<BachelorsProvider>(context, listen: false)
-                  .toggleGender(Gender.male)
-            },
-            icon: Icon(
-              Icons.male,
-              color: maleSelected ? Colors.black : Colors.grey,
+            IconButton(
+              onPressed: () => {
+                Provider.of<BachelorsProvider>(context, listen: false)
+                    .toggleGender(Gender.male)
+              },
+              icon: Icon(
+                Icons.male,
+                color: maleSelected ? Colors.black : Colors.grey,
+              ),
             ),
-          ),
-          IconButton(
-            onPressed: () => context.go('/favorites'),
-            icon: const Icon(
-              Icons.favorite,
-              color: Colors.red,
+            IconButton(
+              onPressed: () => context.go('/favorites'),
+              icon: const Icon(
+                Icons.favorite,
+                color: Colors.red,
+              ),
+            )
+          ],
+        ),
+        body: Column(
+          children: [
+            TextField(
+              onChanged: (value) =>
+                  Provider.of<BachelorsProvider>(context, listen: false)
+                      .searchBachelorByFirstname(value),
+              showCursor: true,
+              cursorColor: Colors.purple[700],
+              decoration:
+                  const InputDecoration(hintText: 'Search by firstname...'),
+              // onTapOutside: (event) => emptyTextField(),
             ),
-          )
-        ],
-      ),
-      body: Consumer<BachelorsProvider>(
-        builder: (context, BachelorsProvider bachelorsProvider, child) {
-          return ListView.builder(
-            itemCount: bachelorsProvider.getAuthorized.length,
-            itemBuilder: ((context, index) {
-              final Bachelor bachelor = bachelorsProvider.getAuthorized[index];
+            Consumer<BachelorsProvider>(
+              builder: (context, BachelorsProvider bachelorsProvider, child) {
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: bachelorsProvider.getAuthorized.length,
+                    itemBuilder: ((context, index) {
+                      final Bachelor bachelor =
+                          bachelorsProvider.getAuthorized[index];
 
-              return BachelorPreview(bachelor: bachelor);
-            }),
-          );
-        },
-      ),
-    );
+                      return Dismissible(
+                        key: Key(bachelor.id!),
+                        child: BachelorPreview(bachelor: bachelor),
+                        onDismissed: (direction) {
+                          Provider.of<BachelorsProvider>(context, listen: false)
+                              .addDislike(bachelor);
+                        },
+                      );
+                    }),
+                  ),
+                );
+              },
+            ),
+          ],
+        ));
   }
 }

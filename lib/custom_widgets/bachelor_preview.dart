@@ -2,7 +2,6 @@ import 'package:finder/models/bachelor.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
 import '../utils/get_methods.dart';
 import '../utils/providers.dart';
 
@@ -47,7 +46,8 @@ class BachelorPreview extends StatelessWidget {
               Text(
                 '${bachelor.firstname} ${bachelor.lastname}',
                 style: TextStyle(
-                    color: getTextColorAccordingToGender(bachelor.gender)),
+                    color: getTextColorAccordingToGender(bachelor.gender),
+                    fontWeight: FontWeight.bold),
               ),
               currentRouteName == 'favorites'
                   ? IconButton(

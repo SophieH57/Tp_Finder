@@ -1,9 +1,9 @@
-// Provider de la liste des favoris
 import 'package:flutter/material.dart';
 
 import '../models/bachelor.dart';
 import 'bachelors_generate.dart';
 
+// Provider de la liste des favoris
 class BachelorsFavoritesProvider extends ChangeNotifier {
   final List<Bachelor> _list = [];
 
@@ -20,6 +20,11 @@ class BachelorsFavoritesProvider extends ChangeNotifier {
 
   void deleteFavoriteBachelor(Bachelor bachelor) {
     _list.remove(bachelor);
+    notifyListeners();
+  }
+
+  void deleteAllFavorites() {
+    _list.clear();
     notifyListeners();
   }
 }
@@ -72,6 +77,16 @@ class BachelorsProvider extends ChangeNotifier {
     } else if (!_femaleSelected && !_maleSelected) {
       _authorized = [];
     }
+    notifyListeners();
+  }
+
+  void searchBachelorByFirstname(String characters) {
+    _authorized = allCustomers();
+    String lowerCaseCharacters = characters.toLowerCase();
+    _authorized = _authorized
+        .where((bachelor) =>
+            bachelor.firstname.toLowerCase().startsWith(lowerCaseCharacters))
+        .toList();
     notifyListeners();
   }
 
